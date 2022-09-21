@@ -23,7 +23,7 @@
     "migrations:generate": "npm run typeorm -- migration:generate -n",
     "migrations:run": "npm run typeorm -- migration:run",
     "migrations:show": "npm run typeorm -- migration:show",
-    "migrations:drop": "npm run typeorm -- migration:drop"
+    "migrations:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -38,7 +38,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.2.45"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
