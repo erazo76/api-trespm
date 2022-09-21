@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Res, HttpStatus, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, HttpStatus, Delete, Param, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -10,11 +10,11 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiOperation({summary:'Register a user by name, last name and document'})
+  @ApiOperation({summary:'Register a user by name, last name, role id and document'})
   async create(@Res() res:Response, @Body() createUserDto: CreateUserDto): Promise<any> {
     let user = await this.usersService.create(createUserDto);
     if(!user){
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message:'Error on server'});
+      return res.status(HttpStatus.NOT_FOUND).json({message:'There is no data role'});
     }else{
       return res.status(HttpStatus.CREATED).json(user);      
     } 
@@ -28,6 +28,16 @@ export class UsersController {
       return res.status(HttpStatus.NOT_FOUND).json({message:'There is no data'});       
     } 
     return res.status(HttpStatus.OK).json(users); 
+  }
+
+  @Put('/:id')
+  @ApiOperation({summary:'Update partial data user by user Id'})
+  async update(@Res() res:Response, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto):Promise<any> {
+    let user = await this.usersService.update(id,updateUserDto);      
+    if(user == undefined){
+      return res.status(HttpStatus.NOT_FOUND).json({message:'There is no data'});       
+    } 
+    return res.status(HttpStatus.OK).json({message:'Record updated successfully',...user}); 
   }
 
   @Delete('/:id')

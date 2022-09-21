@@ -53,7 +53,7 @@ export class SalesService {
       const sales = await this.saleRep.createQueryBuilder('sale')        
       .leftJoin('sale.product', 'product')
       .leftJoin('sale.user', 'user')
-      .select(['product.name','user.name','sale.qty','sale.saleAt'])
+      .select(['product.name','product.description','user.name','user.document','sale.qty','sale.saleAt','sale.id'])
       .getMany();
       return sales;
     } catch (e) {

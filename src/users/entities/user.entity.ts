@@ -1,5 +1,7 @@
+import { Role } from 'src/roles/entities/role.entity';
 import { Sale } from 'src/sales/entities/sale.entity';
-import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
+import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne } from 'typeorm'
+
 
 @Entity()
 export class User {
@@ -18,6 +20,9 @@ export class User {
 
     @OneToMany(() => Sale, (sale) => sale.user)
     sales: Sale[]
+
+    @ManyToOne(() => Role, (role) => role.users)
+    role: Role;
 
     @CreateDateColumn({
         type: 'timestamptz',

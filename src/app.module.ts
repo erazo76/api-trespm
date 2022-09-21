@@ -4,6 +4,7 @@ import config from './config';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
 import { ProductsModule } from './products/products.module';
+import { RolesModule } from './roles/roles.module';
 import { SalesModule } from './sales/sales.module';
 import { UsersModule } from './users/users.module';
 
@@ -17,7 +18,8 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     ProductsModule,
-    SalesModule 
+    SalesModule,
+    RolesModule 
   ],
   controllers: [],
   providers: [],
