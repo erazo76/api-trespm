@@ -2,7 +2,7 @@ import { Sale } from 'src/sales/entities/sale.entity';
 import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
 
 @Entity()
-export class User {
+export class Product {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -11,12 +11,12 @@ export class User {
     name: string;
 
     @Column( { type: 'varchar', length: 30 } )
-    lastName: string;
+    description: string;
 
-    @Column( { type: 'varchar', length: 30 } )
-    document: string;
+    @Column( { type: 'integer' } )
+    price: number;
 
-    @OneToMany(() => Sale, (sale) => sale.user)
+    @OneToMany(() => Sale, (sale) => sale.product)
     sales: Sale[]
 
     @CreateDateColumn({

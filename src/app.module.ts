@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import config from './config';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
+import { ProductsModule } from './products/products.module';
+import { SalesModule } from './sales/sales.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -13,7 +15,9 @@ import { UsersModule } from './users/users.module';
       load: [config],
       isGlobal: true,
     }),
-    UsersModule 
+    UsersModule,
+    ProductsModule,
+    SalesModule 
   ],
   controllers: [],
   providers: [],
