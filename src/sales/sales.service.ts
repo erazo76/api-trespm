@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateSaleDto } from './dto/create-sale.dto';
+import { CreateSaleDto, UpdateSaleDto } from './dto/create-sale.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sale } from './entities/sale.entity';
@@ -16,6 +16,11 @@ export class SalesService {
   }
 
 
+/**
+ * It creates a sale, finds the user and product associated with the sale, and then saves the sale
+ * @param {CreateSaleDto} createSaleDto - CreateSaleDto
+ * @returns The sale object is being returned.
+ */
   async create(createSaleDto: CreateSaleDto):Promise<any> { 
     let {userId, productId, qty} = createSaleDto;
       try{       
@@ -48,6 +53,16 @@ export class SalesService {
   }
 
 
+/**
+ * It returns a list of sales, each sale containing the name, description, name, document, qty, saleAt
+ * and id of the product and user associated with the sale
+ * @returns async findAll(): Promise<Sale[]> {
+ *     try {
+ *       const sales = await this.saleRep.createQueryBuilder('sale')        
+ *       .leftJoin('sale.product', 'product')
+ *       .leftJoin('sale.user', 'user')
+ *       .select(['product.name','product.description','user.name','
+ */
   async findAll(): Promise<Sale[]> {
     try {
       const sales = await this.saleRep.createQueryBuilder('sale')        
@@ -61,7 +76,41 @@ export class SalesService {
     }
   }  
 
+/**
+ * It finds a sale by id, if it exists, it updates the sale with the new data, and returns the updated
+ * sale
+ * @param {string} id - The id of the sale you want to update.
+ * @param {UpdateSaleDto} updateSaleDto - UpdateSaleDto
+ * @returns The updated sale.
+ */
+  async update(id: string, updateSaleDto: UpdateSaleDto) {
+    try {
+      const sale = await this.saleRep.findOne(id);
+      if(!sale){
+        return undefined;
+      }
 
+      if(updateSaleDto.userId){
+        const user = await this.userRep.findOne(updateSaleDto.userId);
+        sale.user = user;
+      }  
+      if(updateSaleDto.productId){
+        const product = await this.productRep.findOne(updateSaleDto.productId);
+        sale.product = product;
+      }    
+      this.saleRep.merge(sale, updateSaleDto);     
+      return await this.saleRep.save(sale);
+      
+    } catch (e) {
+      console.log(e);
+    } 
+  } 
+
+/**
+ * It finds a sale by id, deletes it if it exists, and returns the deleted sale
+ * @param {string} id - The id of the sale you want to delete.
+ * @returns The sale that was deleted.
+ */
   async delete(id:string): Promise<any> {
     try {
       const sale = await this.saleRep.findOne(id);
