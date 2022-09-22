@@ -19,7 +19,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     ProductsModule,
     SalesModule,
-    RolesModule 
+    RolesModule
   ],
   controllers: [],
   providers: [],

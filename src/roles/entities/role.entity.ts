@@ -11,9 +11,7 @@ export class Role {
     @Column( { type: 'varchar', length: 30 } )
     name: string;
 
-    @OneToMany(() => User, (user) => user.role,
-        {eager:true}
-    )
+    @OneToMany(() => User, (user) => user.role)
     users: User[]
     
     @CreateDateColumn({

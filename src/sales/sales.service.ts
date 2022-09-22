@@ -125,8 +125,14 @@ export class SalesService {
     }
   } 
 
-
-
+/**
+ * It returns the total sales and the total quantity of products sold in a given day
+ * @param {string} date - string
+ * @returns {
+ *     total: '0',
+ *     quantity: '0'
+ *   }
+ */
   async getByDate(date: string): Promise<number> {
     try {
       let day = moment(date).add(-5, 'h').format();//varianza por zona horaria
@@ -144,6 +150,14 @@ export class SalesService {
     }
   } 
 
+/**
+ * It returns the total sales of the last 30 days
+ * @param {string} date - string
+ * @returns {
+ *     total: '0',
+ *     quantity: '0'
+ *   }
+ */
   async getByMonth(date: string): Promise<number> {
     try {
       let day1 = moment(date).add(1, 'd').add(-5, 'h').format();//varianza por zona horaria

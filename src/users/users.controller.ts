@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Res, HttpStatus, Delete, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, HttpStatus, Delete, Param, Put} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { Response } from 'express';
@@ -8,7 +8,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+  
   @Post()
   @ApiOperation({summary:'Register a user by name, last name, role id and document'})
   async create(@Res() res:Response, @Body() createUserDto: CreateUserDto): Promise<any> {

@@ -96,4 +96,16 @@ export class UsersService {
     }
   } 
 
+  async findById(id:string): Promise<User> {
+    try {
+      const user = await this.userRep.findOne(id);
+      if(!user){
+        return undefined;
+      }          
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
+  }  
+
 }
