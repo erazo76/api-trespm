@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { Sale } from './entities/sale.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { User } from 'src/users/entities/user.entity';
+import * as moment from 'moment-timezone';
+import { format } from 'path';
 
 @Injectable()
 export class SalesService {
@@ -118,6 +120,42 @@ export class SalesService {
         await this.saleRep.delete(id);
       }       
       return sale;
+    } catch (e) {
+      console.log(e);
+    }
+  } 
+
+
+
+  async getByDate(date: string): Promise<number> {
+    try {
+      let day = moment(date).add(-5, 'h').format();//varianza por zona horaria
+      let day1 = moment(date).add(1, 'd').add(-5,'h').format(); //varianza por zona horaria
+
+      const totalSales = await this.saleRep.createQueryBuilder('sale')
+      .leftJoin('sale.product', 'product')
+      .select("SUM(sale.qty*product.price)", "total")
+      .addSelect("SUM(sale.qty)", "quantity")
+      .where(`"saleAt" BETWEEN '${day}' AND '${day1}'`)     
+      .getRawOne()
+      return totalSales;
+    } catch (e) {
+      console.log(e);
+    }
+  } 
+
+  async getByMonth(date: string): Promise<number> {
+    try {
+      let day1 = moment(date).add(1, 'd').add(-5, 'h').format();//varianza por zona horaria
+      let day = moment(date).add(-30, 'd').add(-5,'h').format(); //varianza por zona horaria
+
+      const totalSales = await this.saleRep.createQueryBuilder('sale')
+      .leftJoin('sale.product', 'product')
+      .select("SUM(sale.qty*product.price)", "total")
+      .addSelect("SUM(sale.qty)", "quantity")
+      .where(`"saleAt" BETWEEN '${day}' AND '${day1}'`)     
+      .getRawOne()
+      return totalSales;
     } catch (e) {
       console.log(e);
     }
